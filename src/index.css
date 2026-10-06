@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+:root {
+	font-family: 'DM Sans', Arial, sans-serif;
+	color: #292d26;
+	background: #f8f7f1;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	--paper: #f8f7f1;
+	--forest: #283d32;
+	--ink: #292d26;
+	--rust: #a96142;
+	--serif: 'Playfair Display', Georgia, serif;
+	--line: #e8e6dd;
+	font-size: 16px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 82px;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+}
+
+body,
+button,
+a {
+	font-family: 'DM Sans', Arial, sans-serif;
+}
+
+button {
+	font: inherit;
+}
+
+a:focus-visible,
+button:focus-visible {
+	outline: 2px solid #a96142;
+	outline-offset: 3px;
+}
+
+img {
+	max-width: 100%;
+}
+
+::selection {
+	background: #d7b59b;
+	color: #292d26;
+}
+
+#root {
+	width: 100%;
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+@media (max-width: 720px) {
+	.topline .topline-note {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
