@@ -6,6 +6,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   BadgeCheck,
+  ChevronDown,
   Clock3,
   DoorOpen,
   Hammer,
@@ -115,7 +116,7 @@ const reveal: Variants = {
 }
 
 function ProductListing({ onGoHome }: { onGoHome: () => void }) {
-  const [activeCategory, setActiveCategory] = useState('all')
+  const [activeCategory, setActiveCategory] = useState(catalogCategories[0].id)
   const [searchTerm, setSearchTerm] = useState('')
 
   const items = catalogCategories.flatMap((category) => {
@@ -144,7 +145,7 @@ function ProductListing({ onGoHome }: { onGoHome: () => void }) {
   })
 
   const visibleItems = items.filter((item) => {
-    const matchesCategory = activeCategory === 'all' || item.category.id === activeCategory
+    const matchesCategory = item.category.id === activeCategory
     const matchesSearch = `${item.title} ${item.category.name}`.toLowerCase().includes(searchTerm.trim().toLowerCase())
     return matchesCategory && matchesSearch
   })
@@ -165,16 +166,17 @@ function ProductListing({ onGoHome }: { onGoHome: () => void }) {
       <section className="catalog-content section-pad" aria-labelledby="catalog-title">
         <div className="catalog-heading">
           <div><div className="eyebrow"><span className="eyebrow-line" /> BROWSE THE RANGE</div><h2 id="catalog-title">What are you<br />looking for?</h2></div>
-          <p>Choose a category or search the complete product gallery from the catalogue.</p>
+          <p>Choose a category to see its products, then search within that collection.</p>
         </div>
 
         <div className="catalog-tools">
-          <div className="catalog-filters" role="group" aria-label="Filter product categories">
-            <button className={activeCategory === 'all' ? 'catalog-filter active' : 'catalog-filter'} onClick={() => setActiveCategory('all')} aria-pressed={activeCategory === 'all'}>All categories</button>
-            {catalogCategories.map((category) => (
-              <button className={activeCategory === category.id ? 'catalog-filter active' : 'catalog-filter'} key={category.id} onClick={() => setActiveCategory(category.id)} aria-pressed={activeCategory === category.id}>{category.name}</button>
-            ))}
-          </div>
+          <label className="category-dropdown">
+            <span className="sr-only">Choose a product category</span>
+            <select value={activeCategory} onChange={(event) => setActiveCategory(event.target.value)}>
+              {catalogCategories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
+            </select>
+            <ChevronDown size={16} aria-hidden="true" />
+          </label>
           <label className="catalog-search"><Search size={17} /><span className="sr-only">Search categories and products</span><input type="search" placeholder="Search the range" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} /></label>
         </div>
 
@@ -183,19 +185,17 @@ function ProductListing({ onGoHome }: { onGoHome: () => void }) {
         {visibleItems.length > 0 ? (
           <motion.div className="catalog-grid" layout>
             {visibleItems.map((item, index) => {
-              const enquiry = `Hello Sagar Traders, I would like to enquire about ${item.isPreview ? item.category.name : item.title}.`
-              const itemWhatsapp = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(enquiry)}`
               const CategoryIcon = item.category.icon
               return (
                 <motion.article className="catalog-card" key={item.id} layout variants={reveal} initial="hidden" animate="visible" transition={{ delay: index * 0.035 }}>
                   <div className="catalog-card-image"><img src={item.image} alt={item.isPreview ? `${item.category.name} at the Sagar Traders showroom` : item.title} loading="lazy" /><span className="catalog-card-count"><CategoryIcon size={13} /> {item.category.name}</span>{item.isPreview && <span className="catalog-photo-note">SHOWROOM PREVIEW</span>}</div>
-                  <div className="catalog-card-info"><div className="catalog-item-category">{item.category.name}</div><h3>{item.isPreview ? `Explore ${item.category.name}` : item.title}</h3><p>{item.isPreview ? item.category.description : 'Ask our team about this item and other options in the collection.'}</p><a href={itemWhatsapp} target="_blank" rel="noreferrer">Ask about this <ArrowUpRight size={15} /></a></div>
+                  <div className="catalog-card-info"><div className="catalog-item-category">{item.category.name}</div><h3>{item.isPreview ? `Explore ${item.category.name}` : item.title}</h3><p>{item.isPreview ? item.category.description : 'Ask our team about this item and other options in the collection.'}</p></div>
                 </motion.article>
               )
             })}
           </motion.div>
         ) : (
-          <div className="catalog-empty"><Search size={22} /><h3>No matching products</h3><p>Try a different search or category.</p><button className="button button-dark" onClick={() => { setSearchTerm(''); setActiveCategory('all') }}>Show all categories <ArrowRight size={15} /></button></div>
+          <div className="catalog-empty"><Search size={22} /><h3>No matching products</h3><p>Try a different search or category.</p><button className="button button-dark" onClick={() => setSearchTerm('')}>Clear search <ArrowRight size={15} /></button></div>
         )}
 
         <div className="catalog-help"><div><span className="catalog-help-mark"><MessageCircle size={19} /></span><p><strong>Looking for something specific?</strong><small>Ask us about a category or visit the shop to see finishes in person.</small></p></div><a className="button button-dark" href={whatsappLink} target="_blank" rel="noreferrer">Chat with Sagar Traders <ArrowUpRight size={15} /></a></div>
@@ -205,12 +205,10 @@ function ProductListing({ onGoHome }: { onGoHome: () => void }) {
 }
 
 function App() {
-  const [activeCategory, setActiveCategory] = useState('All products')
+  const [activeCategory, setActiveCategory] = useState(categories[0].name)
   const [menuOpen, setMenuOpen] = useState(false)
   const [showCatalog, setShowCatalog] = useState(() => window.location.hash === '#/products')
-  const visibleProducts = activeCategory === 'All products'
-    ? products
-    : products.filter((product) => product.type === activeCategory)
+  const visibleProducts = products.filter((product) => product.type === activeCategory)
 
   useEffect(() => {
     const syncPage = () => setShowCatalog(window.location.hash === '#/products')
@@ -320,20 +318,21 @@ function App() {
             <p>Whether you’re building, renovating or just collecting ideas, explore a range chosen to help you take the next step.</p>
           </motion.div>
 
-          <div className="filters" role="group" aria-label="Filter products by category">
-            {['All products', ...categories.map((category) => category.name)].map((category) => (
-              <button className={activeCategory === category ? 'filter-chip active' : 'filter-chip'} key={category} onClick={() => setActiveCategory(category)} aria-pressed={activeCategory === category}>{category}</button>
-            ))}
-          </div>
+          <label className="category-dropdown home-category-dropdown">
+            <span className="sr-only">Choose a product category</span>
+            <select value={activeCategory} onChange={(event) => setActiveCategory(event.target.value)}>
+              {categories.map((category) => <option key={category.name} value={category.name}>{category.name}</option>)}
+            </select>
+            <ChevronDown size={16} aria-hidden="true" />
+          </label>
 
           <motion.div className="product-grid" layout>
             {visibleProducts.map((product, index) => (
               <motion.article className="product-card" key={product.title} layout variants={reveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} transition={{ delay: index * 0.04 }}>
-                <a className="product-image-wrap" href={whatsappLink} target="_blank" rel="noreferrer" aria-label={`Ask us about ${product.title}`}>
+                <div className="product-image-wrap">
                   <img src={product.image} alt={product.title} loading="lazy" />
                   <span className="product-tag">{product.tag}</span>
-                  <span className="product-arrow"><ArrowUpRight size={18} /></span>
-                </a>
+                </div>
                 <div className="product-info"><span className="product-category">{product.type}</span><h3>{product.title}</h3><p>{product.description}</p></div>
               </motion.article>
             ))}

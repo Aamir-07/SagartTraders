@@ -44,7 +44,8 @@ button {
 }
 
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+select:focus-visible {
 	outline: 2px solid #a96142;
 	outline-offset: 3px;
 }
@@ -73,5 +74,48 @@ img {
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
+	}
+}
+
+.category-dropdown {
+	position: relative;
+	display: block;
+	width: min(100%, 290px);
+}
+
+.category-dropdown select {
+	width: 100%;
+	min-height: 43px;
+	appearance: none;
+	border: 1px solid #e4e0d6;
+	border-radius: 0;
+	padding: 0 42px 0 13px;
+	background: #fbfaf6;
+	color: #292d26;
+	font: inherit;
+	font-size: 11px;
+	cursor: pointer;
+}
+
+.category-dropdown > svg {
+	position: absolute;
+	top: 50%;
+	right: 13px;
+	transform: translateY(-50%);
+	color: #686b62;
+	pointer-events: none;
+}
+
+.category-dropdown:focus-within select {
+	border-color: #a96142;
+}
+
+.home-category-dropdown {
+	margin: 37px 0 27px;
+}
+
+@media (max-width: 720px) {
+	.home-category-dropdown {
+		margin: 25px 0 21px;
 	}
 }

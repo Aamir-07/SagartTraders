@@ -29,5 +29,6 @@ The Vite build automatically uses the repository name as the GitHub Pages subpat
 - Supplied showroom, signage, logo, and product photos are stored in `public/images/`.
 - The official Sagar Traders logo is used in the animated header and catalog feature.
 - The product directory is available from the **Products** link and the **Browse products** button.
+- Product collections and the full catalogue use category dropdowns to show one selected category at a time; product cards themselves are not enquiry links.
 - To add the upcoming item-gallery ZIP, put supported image files in the matching category folder under `src/product-images/`. The catalog reads images and display names from those folders on the next build. See `src/product-images/README.md` for category slugs and filename guidance.
 - The home-page furniture inspiration cards use remote Unsplash photos; those require an internet connection.
