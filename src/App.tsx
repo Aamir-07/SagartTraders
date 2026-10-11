@@ -394,7 +394,7 @@ function App() {
         <a className="brand footer-brand" href="#/home" onClick={(event) => { event.preventDefault(); navigateHome() }}><img className="brand-logo" src={officialLogo} alt="Sagar Traders official logo" /><span className="brand-copy"><strong>SAGAR TRADERS</strong><small>PLYWOOD · HARDWARE · HOME</small></span></a>
         <span className="footer-note">Good materials. Better spaces.</span>
         <div className="footer-links"><a href="tel:+918770847424">Call us</a><a href={whatsappLink} target="_blank" rel="noreferrer">WhatsApp</a><a href="https://maps.google.com/?q=Shop+no+2,+opposite+Murli+Nagar+HP+Petrol+Pump,+Karond,+Bhopal" target="_blank" rel="noreferrer">Directions</a></div>
-        <span className="copyright">© {copyrightYear} Sagar Traders · Bhopal</span>
+        <span className="copyright">© {copyrightYear} Sagar Traders · Bhopal · All rights reserved.</span>
       </footer>
       <a className="floating-whatsapp" href={whatsappLink} target="_blank" rel="noreferrer" aria-label="Chat with Sagar Traders on WhatsApp"><MessageCircle size={21} /><span>Chat with us</span></a>
     </MotionConfig>
